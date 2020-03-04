@@ -1,34 +1,6 @@
-# yazi-json
-a tiny c++ json library
+#include <iostream>
+using namespace std;
 
-|Author|junping|
-|---|---|
-|E-mail|oldjun@sina.com|
-|Wechat|chenjunping1024|
-
-## JSON values type define
-
-Any valid JSON data can be manipulated in the following representation. This data structure is [`yazi::json::Json::Type`][Json].
-
-```c++
-enum Json::Type {
-    json_null,
-    json_bool,
-    json_int,
-    json_double
-    json_array,
-    json_object,
-}
-```
-
-## Constructing JSON values
-
-yazi JSON provides a simple way to build `yazi::json::Json`
-objects.
-
-## Manipulate the basic type value
-
-```c++
 #include "Json.h"
 using namespace yazi::json;
 
@@ -36,8 +8,6 @@ int main()
 {
     // the null json value
     Json null;
-    
-    // serialize the json value to string;
     std::cout << null.toString() << std::endl;
     
     
@@ -88,18 +58,9 @@ int main()
     bool b1 = bool1;                        // #1 get a bool value
     bool b2 = (bool)bool2;                  // #2 get a bool value
     bool b3 = bool3.asBool();               // #3 get a bool value
-}
-```
+    
 
-## Manipulate the array type value
-
-```c++
-#include "Json.h"
-using namespace yazi::json;
-
-int main()
-{
-    // 2 ways to build an array value
+    // manipulate an array value
     Json arr1;                             // #1 set an array value
     arr1[0] = "th0 item";
     arr1[1] = "th1 item";
@@ -109,40 +70,29 @@ int main()
     arr2.append("th0 item");
     arr2.append("th1 item");
     arr2.append("th2 item");
-    
+
     // 3 ways to get an array value
-    const string & s1 = arr1[0];            // #1 get an array item
-    const string & s2 = (string)arr1[0];    // #2 get an array item
-    const string & s3 = arr1[0].asString(); // #3 get an array item
+    const string & s4 = arr1[0];
+    const string & s5 = (string)arr1[0];
+    const string & s6 = arr1[0].asString();
 
     // 3 ways to loop over each item in array
     int len = arr1.size();
-    for (int i = 0; i < len; i++)   // #1 loop over an array
+    for (int i = 0; i < len; i++)
     {
-        std::cout << arr1[i].asString() << std::endl;
+        std::cout << "arr1[" << i << "] = " << arr1[i].asString() << std::endl;
     }
 
-    for (Json::iterator it = arr1.begin(); it != arr1.end(); it++) // #2 loop over an array
+    for (Json::iterator it = arr1.begin(); it != arr1.end(); it++)
+    {
+        std::cout << (*it).asString() << std::endl;
+    }
+
+    for (Json::const_iterator it = arr1.begin(); it != arr1.end(); it++)
     {
         std::cout << (*it).asString() << std::endl;
     }
 
-    for (Json::const_iterator it = arr1.begin(); it != arr1.end(); it++) // #3 loop over an array
-    {
-        std::cout << (*it).asString() << std::endl;
-    }
-    
-    return 0;
-}
-```
-## Manipulate the object type value
-
-```c++
-#include "Json.h"
-using namespace yazi::json;
-
-int main()
-{
     // manipulate an object value
     Json obj;
     obj["name"] = "junping";
@@ -166,7 +116,7 @@ int main()
     // if obj is object type value
     if (obj.isObject())
     {
-        std::cout << "the obj is a json object type" << std::endl;
+        std::cout << "the obj is a json object type value" << std::endl;
     }
 
     // if the object has key work
@@ -186,18 +136,6 @@ int main()
     // serialize the json value to string;
     std::cout << obj.toString() << std::endl;
 
-    return 0;
-}
-```
-
-## Parsing string to json value
-
-```c++
-#include "Json.h"
-using namespace yazi::json;
-
-int main()
-{
     try {
 
         // parse a string to json null value;
@@ -229,20 +167,10 @@ int main()
         const string & str2 = "{\"name\":\"junping\",\"age\":30,\"sex\":\"man\"}";
         Json obj;
         obj.parse(str2);
-
+        
     } catch (std::exception & e) {
         std::cout << "catch exception: " << e.what() << std::endl;
     }
 
     return 0;
 }
-```
-
-## Compile & Run the project
-download the source code, cd into the yazi-json project working directory, run command make && ./main 
-```bash
-cd ./yazi-json
-make
-./main
-```
-
